@@ -6,7 +6,7 @@ public class TNo {
 	public TNo proximo;
 	
 	public TNo(String dado) {
-		
+		this.dado = dado;
 	}
 	
 }

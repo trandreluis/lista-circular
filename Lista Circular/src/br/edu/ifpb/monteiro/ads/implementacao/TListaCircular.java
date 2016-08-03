@@ -26,23 +26,24 @@ public class TListaCircular implements TLista {
 		 */
 		TNo novoNo = new TNo(dado);
 		
+		/**
+		 * Se vazia, inicialize a lista
+		 */
 		if(isVazia()) {
-			
-			inicio = novoNo;			
-		
+			inicio = novoNo;
 		}
 		else {
-			
 			TNo aux = inicio;
 			
-			while(aux.proximo!=null){
-				aux = aux.proximo;				
+			for(int i = 1; i < tamanho(); i++) {
+				aux = aux.proximo;
 			}
 			
-			aux.proximo = novoNo;	
+			novoNo.proximo = inicio;
+			aux.proximo = novoNo;
 			
 		}
-		
+		tamanho++;
 	}
 
 	@Override
@@ -54,16 +55,34 @@ public class TListaCircular implements TLista {
 
 	@Override
 	public String buscar(int posicao) throws PosicaoInvalidaException {
-
 		
-		return null;
+		if(posicao <= 0 || posicao > tamanho)
+			throw new PosicaoInvalidaException();
+		
+		TNo aux = inicio;
+		
+		for(int i = 1; i < posicao; i++) {
+			aux = aux.proximo;
+		}
+		
+		return aux.dado;
+		
 	}
 
 	@Override
 	public int posicao(String dado) throws ElementoNaoEncontradoException {
 		
+		TNo aux = inicio;
 		
-		return 0;
+		for(int i = 1; i < tamanho(); i++) {
+			if(aux.dado.equals(dado)) {
+				return i;
+			}
+			aux = aux.proximo;
+		}
+		
+		throw new ElementoNaoEncontradoException();
+		
 	}
 
 	@Override
@@ -97,6 +116,14 @@ public class TListaCircular implements TLista {
 	@Override
 	public boolean existe(String buscar) {
 
+		TNo aux = inicio;
+		
+		for(int i = 0; i < tamanho(); i++) {
+			if(aux.dado.equals(buscar)) {
+				return true;
+			}
+			aux = aux.proximo;
+		}
 		
 		return false;
 	}
@@ -104,7 +131,47 @@ public class TListaCircular implements TLista {
 	@Override
 	public void imprimir() {
 
+		TNo aux = inicio;
 		
+		for(int i = 0; i < tamanho(); i++) {
+			System.out.println(aux.dado);
+			aux = aux.proximo;
+		}
+		
+	}
+	
+	public static void main(String[] args) {
+		
+		TListaCircular lista = new TListaCircular();
+		
+		try {
+			System.out.println("Inserindo...(Andre, luis, s!)");
+			lista.inserirNoFim("Andre");
+			lista.inserirNoFim("luis");
+			lista.inserirNoFim("s!");
+			System.out.println("imprimindo...");
+			lista.imprimir();
+			try {
+				System.out.println("Pegando posicao...(luis)");
+				System.out.println(lista.posicao("luis"));
+				try {
+					System.out.println("buscando...(posicao 3)");
+					System.out.println(lista.buscar(3));
+					System.out.println("Verificando existencia do elemento (s!)");
+					System.out.println(lista.existe("s!"));
+				} catch (PosicaoInvalidaException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} catch (ElementoNaoEncontradoException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+//			System.out.println(lista.tamanho);
+		} catch (ListaCheiaException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 
@@ -118,6 +185,4 @@ public class TListaCircular implements TLista {
 		return this.inicio == null;
 	}
 
-	
-	
 }
