@@ -46,10 +46,30 @@ public class TListaCircular implements TLista {
 		tamanho++;
 	}
 
+	/**
+	 * Falta concluir...
+	 */
 	@Override
 	public void inserirNaPosicao(String dado, int posicao) throws ListaCheiaException, PosicaoInvalidaException {
 		
+		if(posicao <= 0 || posicao > tamanho)
+			throw new PosicaoInvalidaException();
 		
+		TNo novoNo = new TNo(dado);
+		
+		TNo antecessor;
+		TNo sucessor;
+		
+		TNo aux = inicio;
+		
+		for (int i = 1; i < posicao; i++) {
+			aux = aux.proximo;
+		}
+		
+		novoNo.proximo = aux;
+//		antecessor = antecessor(aux.dado);
+		
+		System.out.println("Cehguei nesta posicao: "+aux.dado);
 		
 	}
 
@@ -74,7 +94,7 @@ public class TListaCircular implements TLista {
 		
 		TNo aux = inicio;
 		
-		for(int i = 1; i < tamanho(); i++) {
+		for(int i = 1; i <= tamanho(); i++) {
 			if(aux.dado.equals(dado)) {
 				return i;
 			}
@@ -101,7 +121,22 @@ public class TListaCircular implements TLista {
 
 	@Override
 	public String antecessor(String dado) throws ElementoNaoEncontradoException, ListaVaziaException {
-
+		
+		if(isVazia())
+			throw new ListaVaziaException();
+		
+		if(!existe(dado))
+			throw new ElementoNaoEncontradoException();
+		
+		TNo aux = inicio;
+		
+		int posicao = posicao(dado);
+		
+		for(int i = 0; i < posicao+1; i++) {
+			aux = aux.proximo;
+		}
+		
+		System.out.println(aux.dado);
 		
 		return null;
 	}
@@ -109,8 +144,22 @@ public class TListaCircular implements TLista {
 	@Override
 	public String sucessor(String dado) throws ElementoNaoEncontradoException, ListaVaziaException {
 
+		if(isVazia())
+			throw new ListaVaziaException();
 		
-		return null;
+		if(!existe(dado))
+			throw new ElementoNaoEncontradoException();
+		
+		TNo aux = inicio;
+		
+		int posicao = posicao(dado);
+		
+		for(int i = 1; i <= posicao; i++) {
+			aux = aux.proximo;
+		}
+		
+		return aux.dado;
+		
 	}
 
 	@Override
@@ -152,13 +201,22 @@ public class TListaCircular implements TLista {
 			System.out.println("imprimindo...");
 			lista.imprimir();
 			try {
-				System.out.println("Pegando posicao...(luis)");
-				System.out.println(lista.posicao("luis"));
+				System.out.println("Pegando posicao...(s!)");
+				System.out.println(lista.posicao("s!"));
 				try {
 					System.out.println("buscando...(posicao 3)");
 					System.out.println(lista.buscar(3));
 					System.out.println("Verificando existencia do elemento (s!)");
 					System.out.println(lista.existe("s!"));
+					try{
+						System.out.println("Pegando sucessor de (s!)");
+						System.out.println(lista.sucessor("s!"));
+						System.out.println("Pegando antecessor de (Andre)");
+						lista.antecessor("Andre");
+						lista.inserirNaPosicao("Novo", 1);
+					} catch(Exception e) {
+						e.printStackTrace();
+					}
 				} catch (PosicaoInvalidaException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
