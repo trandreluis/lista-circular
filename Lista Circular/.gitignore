@@ -1,1 +1,6 @@
+# Arquivos desnecessarios do eclipse
 /bin/
+
+.classpath
+.project
+.settings/
