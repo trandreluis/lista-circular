@@ -9,7 +9,7 @@ public interface TLista {
 
 	public void inserirNoFim(String dado) throws ListaCheiaException;
 	
-	public void inserirNaPosicao(String dado,int posicao) throws ListaCheiaException, PosicaoInvalidaException;
+	public void inserirNaPosicao(String dado,int posicao) throws ListaCheiaException, PosicaoInvalidaException, ElementoNaoEncontradoException, ListaVaziaException;
 	
 	public String buscar(int posicao) throws PosicaoInvalidaException;
 

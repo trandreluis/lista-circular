@@ -48,17 +48,16 @@ public class TListaCircular implements TLista {
 
 	/**
 	 * Falta concluir...
+	 * @throws ListaVaziaException 
+	 * @throws ElementoNaoEncontradoException 
 	 */
 	@Override
-	public void inserirNaPosicao(String dado, int posicao) throws ListaCheiaException, PosicaoInvalidaException {
+	public void inserirNaPosicao(String dado, int posicao) throws ListaCheiaException, PosicaoInvalidaException, ElementoNaoEncontradoException, ListaVaziaException {
 		
 		if(posicao <= 0 || posicao > tamanho)
 			throw new PosicaoInvalidaException();
 		
 		TNo novoNo = new TNo(dado);
-		
-		TNo antecessor;
-		TNo sucessor;
 		
 		TNo aux = inicio;
 		
@@ -67,10 +66,13 @@ public class TListaCircular implements TLista {
 		}
 		
 		novoNo.proximo = aux;
-//		antecessor = antecessor(aux.dado);
+		TNo antecessor = antecessorTNo(aux.dado);
+		antecessor.proximo = novoNo;
 		
-		System.out.println("Cehguei nesta posicao: "+aux.dado);
+		if(posicao == 1)
+			inicio = novoNo;
 		
+		tamanho++;
 	}
 
 	@Override
@@ -138,9 +140,48 @@ public class TListaCircular implements TLista {
 		
 		System.out.println(aux.dado);
 		
-		return null;
+		return aux.dado;
 	}
 
+	public TNo antecessorTNo(String dado) throws ElementoNaoEncontradoException, ListaVaziaException {
+		
+		if(isVazia())
+			throw new ListaVaziaException();
+		
+		if(!existe(dado))
+			throw new ElementoNaoEncontradoException();
+		
+		TNo aux = inicio;
+		
+		int posicao = posicao(dado);
+		
+		for(int i = 0; i < posicao+1; i++) {
+			aux = aux.proximo;
+		}
+		
+		return aux;
+	}
+	
+	public TNo sucessorTNo(String dado) throws ElementoNaoEncontradoException, ListaVaziaException {
+
+		if(isVazia())
+			throw new ListaVaziaException();
+		
+		if(!existe(dado))
+			throw new ElementoNaoEncontradoException();
+		
+		TNo aux = inicio;
+		
+		int posicao = posicao(dado);
+		
+		for(int i = 1; i <= posicao; i++) {
+			aux = aux.proximo;
+		}
+		
+		return aux;
+		
+	}
+	
 	@Override
 	public String sucessor(String dado) throws ElementoNaoEncontradoException, ListaVaziaException {
 
@@ -213,7 +254,12 @@ public class TListaCircular implements TLista {
 						System.out.println(lista.sucessor("s!"));
 						System.out.println("Pegando antecessor de (Andre)");
 						lista.antecessor("Andre");
-						lista.inserirNaPosicao("Novo", 1);
+						System.out.println("LISTA ANTES..........");
+						lista.imprimir();
+						lista.inserirNaPosicao("Novo", 2);
+						System.out.println("LISTA DEPOIS.........");
+						lista.imprimir();
+						
 					} catch(Exception e) {
 						e.printStackTrace();
 					}
