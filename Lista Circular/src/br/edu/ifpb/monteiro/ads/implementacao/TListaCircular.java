@@ -11,6 +11,13 @@ public class TListaCircular implements TLista {
 
 	TNo inicio;
 	
+	int tamanho;
+	
+	public TListaCircular() {
+		this.inicio = null;
+		this.tamanho = 0;
+	}
+	
 	@Override
 	public void inserirNoFim(String dado) throws ListaCheiaException {
 		
@@ -103,15 +110,12 @@ public class TListaCircular implements TLista {
 
 	@Override
 	public int tamanho() {
-
-		
-		return 0;
+		return tamanho;
 	}
 
 	@Override
 	public boolean isVazia() {
-		// TODO Auto-generated method stub
-		return false;
+		return this.inicio == null;
 	}
 
 	
