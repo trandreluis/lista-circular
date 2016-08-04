@@ -7,7 +7,7 @@ import br.edu.ifpb.monteiro.ads.execoes.PosicaoInvalidaException;
 
 public interface TLista {
 
-	public void inserirNoFim(String dado) throws ListaCheiaException;
+	public void inserir(String dado) throws ListaCheiaException;
 	
 	public void inserirNaPosicao(String dado,int posicao) throws ListaCheiaException, PosicaoInvalidaException, ElementoNaoEncontradoException, ListaVaziaException;
 	
@@ -27,7 +27,7 @@ public interface TLista {
 	
 	public boolean isVazia();
 
-	public void imprimir();
+	public void imprimir() throws ListaVaziaException;
 	
 	public int tamanho();
 

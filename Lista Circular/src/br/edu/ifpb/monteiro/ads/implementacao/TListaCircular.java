@@ -10,76 +10,59 @@ import br.edu.ifpb.monteiro.ads.no.TNo;
 public class TListaCircular implements TLista {
 
 	TNo inicio;
-	
 	int tamanho;
-	
+
 	public TListaCircular() {
 		this.inicio = null;
 		this.tamanho = 0;
 	}
-	
+
+	/**
+	 * Implementado...
+	 */
 	@Override
-	public void inserirNoFim(String dado) throws ListaCheiaException {
-		
-		/**
-		 * Criacao de novo TNo ainda nao indexado na lista
-		 */
+	public void inserir(String dado) throws ListaCheiaException {
+
 		TNo novoNo = new TNo(dado);
-		
-		/**
-		 * Se vazia, inicialize a lista
-		 */
-		if(isVazia()) {
+
+		if (isVazia()) {
 			inicio = novoNo;
-		}
-		else {
-			TNo aux = inicio;
-			
-			for(int i = 1; i < tamanho(); i++) {
-				aux = aux.proximo;
+		} else {
+
+			if (tamanho() == 1) {
+				inicio.proximo = novoNo;
+				novoNo.proximo = inicio;
 			}
-			
-			novoNo.proximo = inicio;
-			aux.proximo = novoNo;
-			
+
+			else {
+
+				TNo aux = inicio;
+
+				while (!aux.proximo.equals(inicio)) {
+					aux = aux.proximo;
+				}
+				aux.proximo = novoNo;
+				novoNo.proximo = inicio;
+			}
 		}
 		tamanho++;
 	}
 
 	/**
-	 * Falta concluir...
-	 * @throws ListaVaziaException 
-	 * @throws ElementoNaoEncontradoException 
-	 */
+	 * Falta implementar
+	 */	
 	@Override
-	public void inserirNaPosicao(String dado, int posicao) throws ListaCheiaException, PosicaoInvalidaException, ElementoNaoEncontradoException, ListaVaziaException {
+	public void inserirNaPosicao(String dado, int posicao)
+			throws ListaCheiaException, PosicaoInvalidaException, ElementoNaoEncontradoException, ListaVaziaException {
 		
-		if(posicao <= 0 || posicao > tamanho)
-			throw new PosicaoInvalidaException();
-		
-		TNo novoNo = new TNo(dado);
-		
-		TNo aux = inicio;
-		
-		for (int i = 1; i < posicao; i++) {
-			aux = aux.proximo;
-		}
-		
-		novoNo.proximo = aux;
-		TNo antecessor = antecessorTNo(aux.dado);
-		antecessor.proximo = novoNo;
-		
-		if(posicao == 1)
-			inicio = novoNo;
-		
-		tamanho++;
 	}
 
 	@Override
 	public String buscar(int posicao) throws PosicaoInvalidaException {
 		
-		if(posicao <= 0 || posicao > tamanho)
+		if(posicao <= 0 || posicao > tamanho()) {
 			throw new PosicaoInvalidaException();
+		}
 		
 		TNo aux = inicio;
 		
@@ -88,202 +71,248 @@ public class TListaCircular implements TLista {
 		}
 		
 		return aux.dado;
-		
 	}
 
+	/**
+	 * Implementado...
+	 */
 	@Override
 	public int posicao(String dado) throws ElementoNaoEncontradoException {
-		
+
+		if (!existe(dado)) {
+			throw new ElementoNaoEncontradoException();
+		}
+
 		TNo aux = inicio;
-		
-		for(int i = 1; i <= tamanho(); i++) {
-			if(aux.dado.equals(dado)) {
-				return i;
-			}
+
+		int posicao = 1;
+
+		for (; !aux.dado.equals(dado); posicao++) {
 			aux = aux.proximo;
 		}
-		
-		throw new ElementoNaoEncontradoException();
-		
+
+		return posicao;
 	}
 
 	@Override
 	public void remover(String dado) throws ElementoNaoEncontradoException, ListaVaziaException {
 
-		
-		
+		if (isVazia()) {
+			throw new ListaVaziaException();
+		}
+
+		if (!existe(dado)) {
+			throw new ElementoNaoEncontradoException();
+		}
+
+		TNo aux = inicio;
+
+		while (!aux.proximo.equals(inicio)) {
+			aux = aux.proximo;
+		}
+
+		TNo antecessor = antecessorTNo(dado);
+		TNo sucessor = sucessorTNo(dado);
+
+		antecessor.proximo = sucessor;
+
+		if (inicio.dado.equals(dado)) {
+			inicio = sucessor;
+		}
+
+		tamanho--;
 	}
 
 	@Override
 	public void remover(int posicao) throws ElementoNaoEncontradoException, ListaVaziaException {
 
-		
-		
 	}
 
+	/**
+	 * Implementado...
+	 */
+	public TNo antecessorTNo(String dado) throws ElementoNaoEncontradoException, ListaVaziaException {
+
+		if (isVazia()) {
+			throw new ListaVaziaException();
+		}
+
+		if (!existe(dado) || tamanho() == 1) {
+			throw new ElementoNaoEncontradoException();
+		}
+
+		int posicao = posicao(dado);
+
+		if (posicao == 1) {
+
+			TNo aux = inicio;
+
+			while (!aux.proximo.equals(inicio)) {
+				aux = aux.proximo;
+			}
+
+			return aux;
+		}
+
+		else {
+			TNo aux = inicio;
+
+			for (int i = 1; i < posicao - 1; i++) {
+				aux = aux.proximo;
+			}
+
+			return aux;
+
+		}
+
+	}
+
+	/**
+	 * Implementado...
+	 */
 	@Override
 	public String antecessor(String dado) throws ElementoNaoEncontradoException, ListaVaziaException {
-		
-		if(isVazia())
+
+		if (isVazia()) {
 			throw new ListaVaziaException();
-		
-		if(!existe(dado))
-			throw new ElementoNaoEncontradoException();
-		
-		TNo aux = inicio;
-		
-		int posicao = posicao(dado);
-		
-		for(int i = 0; i < posicao+1; i++) {
-			aux = aux.proximo;
 		}
-		
-		System.out.println(aux.dado);
-		
-		return aux.dado;
+
+		if (!existe(dado) || tamanho() == 1) {
+			throw new ElementoNaoEncontradoException();
+		}
+
+		int posicao = posicao(dado);
+
+		if (posicao == 1) {
+
+			TNo aux = inicio;
+
+			while (!aux.proximo.equals(inicio)) {
+				aux = aux.proximo;
+			}
+
+			return aux.dado;
+		}
+
+		else {
+			TNo aux = inicio;
+
+			for (int i = 1; i < posicao - 1; i++) {
+				aux = aux.proximo;
+			}
+
+			return aux.dado;
+
+		}
+
 	}
 
-	public TNo antecessorTNo(String dado) throws ElementoNaoEncontradoException, ListaVaziaException {
-		
-		if(isVazia())
-			throw new ListaVaziaException();
-		
-		if(!existe(dado))
-			throw new ElementoNaoEncontradoException();
-		
-		TNo aux = inicio;
-		
-		int posicao = posicao(dado);
-		
-		for(int i = 0; i < posicao+1; i++) {
-			aux = aux.proximo;
-		}
-		
-		return aux;
-	}
-	
+	/**
+	 * Implementado...
+	 */
 	public TNo sucessorTNo(String dado) throws ElementoNaoEncontradoException, ListaVaziaException {
 
-		if(isVazia())
+		if (isVazia()) {
 			throw new ListaVaziaException();
-		
-		if(!existe(dado))
+		}
+
+		if (!existe(dado) || tamanho() == 1) {
 			throw new ElementoNaoEncontradoException();
-		
+		}
+
 		TNo aux = inicio;
-		
-		int posicao = posicao(dado);
-		
-		for(int i = 1; i <= posicao; i++) {
+
+		while (!aux.dado.equals(dado)) {
 			aux = aux.proximo;
 		}
-		
-		return aux;
-		
+
+		return aux.proximo;
+
 	}
-	
+
+	/**
+	 * Implementado...
+	 */
 	@Override
 	public String sucessor(String dado) throws ElementoNaoEncontradoException, ListaVaziaException {
 
-		if(isVazia())
+		if (isVazia()) {
 			throw new ListaVaziaException();
-		
-		if(!existe(dado))
+		}
+
+		if (!existe(dado) || tamanho() == 1) {
 			throw new ElementoNaoEncontradoException();
-		
+		}
+
 		TNo aux = inicio;
-		
-		int posicao = posicao(dado);
-		
-		for(int i = 1; i <= posicao; i++) {
+
+		while (!aux.dado.equals(dado)) {
 			aux = aux.proximo;
 		}
-		
-		return aux.dado;
-		
+
+		return aux.proximo.dado;
+
 	}
 
+	/**
+	 * Implementado...
+	 */
 	@Override
 	public boolean existe(String buscar) {
 
+		if (isVazia()) {
+			return false;
+		}
+
 		TNo aux = inicio;
-		
-		for(int i = 0; i < tamanho(); i++) {
-			if(aux.dado.equals(buscar)) {
+
+		for (int i = 0; i < tamanho(); i++) {
+			if (aux.dado.equals(buscar)) {
 				return true;
 			}
 			aux = aux.proximo;
 		}
-		
+
 		return false;
+
 	}
 
+	/**
+	 * Implementado...
+	 */
 	@Override
-	public void imprimir() {
+	public void imprimir() throws ListaVaziaException {
+
+		if (isVazia()) {
+			throw new ListaVaziaException();
+		}
 
 		TNo aux = inicio;
-		
-		for(int i = 0; i < tamanho(); i++) {
+
+		if (tamanho() == 1) {
 			System.out.println(aux.dado);
-			aux = aux.proximo;
 		}
-		
-	}
-	
-	public static void main(String[] args) {
-		
-		TListaCircular lista = new TListaCircular();
-		
-		try {
-			System.out.println("Inserindo...(Andre, luis, s!)");
-			lista.inserirNoFim("Andre");
-			lista.inserirNoFim("luis");
-			lista.inserirNoFim("s!");
-			System.out.println("imprimindo...");
-			lista.imprimir();
-			try {
-				System.out.println("Pegando posicao...(s!)");
-				System.out.println(lista.posicao("s!"));
-				try {
-					System.out.println("buscando...(posicao 3)");
-					System.out.println(lista.buscar(3));
-					System.out.println("Verificando existencia do elemento (s!)");
-					System.out.println(lista.existe("s!"));
-					try{
-						System.out.println("Pegando sucessor de (s!)");
-						System.out.println(lista.sucessor("s!"));
-						System.out.println("Pegando antecessor de (Andre)");
-						lista.antecessor("Andre");
-						System.out.println("LISTA ANTES..........");
-						lista.imprimir();
-						lista.inserirNaPosicao("Novo", 2);
-						System.out.println("LISTA DEPOIS.........");
-						lista.imprimir();
-						
-					} catch(Exception e) {
-						e.printStackTrace();
-					}
-				} catch (PosicaoInvalidaException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			} catch (ElementoNaoEncontradoException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-//			System.out.println(lista.tamanho);
-		} catch (ListaCheiaException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+
+		else {
+			do {
+				System.out.println(aux.dado);
+				aux = aux.proximo;
+			} while (!aux.dado.equals(inicio.dado));
 		}
-		
+
 	}
 
+	/**
+	 * Implementado...
+	 */
 	@Override
 	public int tamanho() {
 		return tamanho;
 	}
 
+	/**
+	 * Implementado...
+	 */
 	@Override
 	public boolean isVazia() {
 		return this.inicio == null;
