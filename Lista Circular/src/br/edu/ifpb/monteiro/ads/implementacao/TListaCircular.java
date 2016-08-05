@@ -50,26 +50,70 @@ public class TListaCircular implements TLista {
 
 	/**
 	 * Falta implementar
-	 */	
+	 */
 	@Override
 	public void inserirNaPosicao(String dado, int posicao)
 			throws ListaCheiaException, PosicaoInvalidaException, ElementoNaoEncontradoException, ListaVaziaException {
-		
-	}
 
-	@Override
-	public String buscar(int posicao) throws PosicaoInvalidaException {
-		
-		if(posicao <= 0 || posicao > tamanho()) {
+		TNo novoNo = new TNo(dado);
+
+		if (posicao > 1 && tamanho() == 0 || posicao <= 0) {
 			throw new PosicaoInvalidaException();
 		}
-		
+
+		if (posicao == 1 && tamanho() == 0) {
+			inicio = novoNo;
+		} 
+
+		else if(posicao == tamanho() + 1) {
+			inserir(novoNo.dado);
+		}
+		else {
+				TNo noPosicaoDesejada = buscarTNo(posicao);
+				TNo antecessor = antecessorTNo(noPosicaoDesejada.dado);
+				
+				novoNo.proximo = noPosicaoDesejada;
+				antecessor.proximo = novoNo;
+				
+				if(posicao == 1) {
+					inicio = novoNo;					
+				}
+		}
+
+		tamanho++;
+	}
+
+	public TNo buscarTNo(int posicao) throws PosicaoInvalidaException {
+
+		if (posicao <= 0 || posicao > tamanho()) {
+			throw new PosicaoInvalidaException();
+		}
+
 		TNo aux = inicio;
-		
-		for(int i = 1; i < posicao; i++) {
+
+		for (int i = 1; i < posicao; i++) {
 			aux = aux.proximo;
 		}
-		
+
+		return aux;
+	}
+
+	/**
+	 * Implementado...
+	 */
+	@Override
+	public String buscar(int posicao) throws PosicaoInvalidaException {
+
+		if (posicao <= 0 || posicao > tamanho()) {
+			throw new PosicaoInvalidaException();
+		}
+
+		TNo aux = inicio;
+
+		for (int i = 1; i < posicao; i++) {
+			aux = aux.proximo;
+		}
+
 		return aux.dado;
 	}
 
@@ -94,6 +138,9 @@ public class TListaCircular implements TLista {
 		return posicao;
 	}
 
+	/**
+	 * Implementado...
+	 */
 	@Override
 	public void remover(String dado) throws ElementoNaoEncontradoException, ListaVaziaException {
 
@@ -111,21 +158,54 @@ public class TListaCircular implements TLista {
 			aux = aux.proximo;
 		}
 
-		TNo antecessor = antecessorTNo(dado);
-		TNo sucessor = sucessorTNo(dado);
+		if (tamanho() > 1) {
+			TNo antecessor = antecessorTNo(dado);
+			TNo sucessor = sucessorTNo(dado);
 
-		antecessor.proximo = sucessor;
+			antecessor.proximo = sucessor;
 
-		if (inicio.dado.equals(dado)) {
-			inicio = sucessor;
+			if (inicio.dado.equals(dado)) {
+				inicio = sucessor;
+			}
+		} else {
+			inicio = null;
 		}
-
+		
 		tamanho--;
 	}
 
+	/**
+	 * Implementado...
+	 */
 	@Override
-	public void remover(int posicao) throws ElementoNaoEncontradoException, ListaVaziaException {
+	public void remover(int posicao)
+			throws PosicaoInvalidaException, ElementoNaoEncontradoException, ListaVaziaException {
 
+		if (isVazia()) {
+			throw new ListaVaziaException();
+		}
+
+		if (posicao <= 0 || posicao > tamanho()) {
+			throw new PosicaoInvalidaException();
+		}
+
+		if (tamanho() > 1) {
+
+			String dado = buscar(posicao);
+
+			TNo antecessor = antecessorTNo(dado);
+			TNo sucessor = sucessorTNo(dado);
+
+			antecessor.proximo = sucessor;
+
+			if (inicio.dado.equals(dado)) {
+				inicio = sucessor;
+			}
+		} else {
+			inicio = null;
+		}
+		
+		tamanho--;
 	}
 
 	/**
@@ -162,9 +242,7 @@ public class TListaCircular implements TLista {
 			}
 
 			return aux;
-
 		}
-
 	}
 
 	/**
@@ -202,9 +280,7 @@ public class TListaCircular implements TLista {
 			}
 
 			return aux.dado;
-
 		}
-
 	}
 
 	/**
@@ -227,7 +303,6 @@ public class TListaCircular implements TLista {
 		}
 
 		return aux.proximo;
-
 	}
 
 	/**
@@ -251,7 +326,6 @@ public class TListaCircular implements TLista {
 		}
 
 		return aux.proximo.dado;
-
 	}
 
 	/**
@@ -274,7 +348,6 @@ public class TListaCircular implements TLista {
 		}
 
 		return false;
-
 	}
 
 	/**
@@ -290,12 +363,12 @@ public class TListaCircular implements TLista {
 		TNo aux = inicio;
 
 		if (tamanho() == 1) {
-			System.out.println(aux.dado);
+			System.out.print(aux.dado + " - ");
 		}
 
 		else {
 			do {
-				System.out.println(aux.dado);
+				System.out.print(aux.dado + " - ");
 				aux = aux.proximo;
 			} while (!aux.dado.equals(inicio.dado));
 		}

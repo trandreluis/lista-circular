@@ -17,7 +17,7 @@ public interface TLista {
 	
 	public void remover(String dado) throws ElementoNaoEncontradoException, ListaVaziaException;
 	
-	public void remover(int posicao) throws ElementoNaoEncontradoException, ListaVaziaException;
+	public void remover(int posicao) throws ElementoNaoEncontradoException, ListaVaziaException, PosicaoInvalidaException;
 	
 	public String antecessor(String dado) throws ElementoNaoEncontradoException, ListaVaziaException;
 	

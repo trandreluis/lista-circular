@@ -189,12 +189,18 @@ public class Main {
 		int posicao = s.nextInt();
 		
 		try {
-			lista.remover(posicao);
+			try {
+				lista.remover(posicao);
+			} catch (PosicaoInvalidaException e) {
+				System.out.println();
+				System.out.println("A posicao "+posicao+" nao e valida!");
+				System.out.println();
+			}
 			System.out.println("Elemento removido com sucesso!");
 		} catch (ElementoNaoEncontradoException e) {
-			System.out.println();
+			System.out.println("A lista esta vazia!");
 		} catch (ListaVaziaException e) {
-			
+			System.out.println("A lista esta vazia!");
 		}
 		
 		menu();
@@ -267,6 +273,7 @@ public class Main {
 		} catch (ListaVaziaException e) {
 			System.out.println("A lista está vazia!");
 		}
+		System.out.println();
 		System.out.println("FIM IMPRESSAO...");
 		
 		menu();
