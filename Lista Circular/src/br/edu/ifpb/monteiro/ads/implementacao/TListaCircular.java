@@ -17,9 +17,6 @@ public class TListaCircular implements TLista {
 		this.tamanho = 0;
 	}
 
-	/**
-	 * Implementado...
-	 */
 	@Override
 	public void inserir(String dado) throws ListaCheiaException {
 
@@ -48,9 +45,6 @@ public class TListaCircular implements TLista {
 		tamanho++;
 	}
 
-	/**
-	 * Falta implementar
-	 */
 	@Override
 	public void inserirNaPosicao(String dado, int posicao)
 			throws ListaCheiaException, PosicaoInvalidaException, ElementoNaoEncontradoException, ListaVaziaException {
@@ -98,9 +92,6 @@ public class TListaCircular implements TLista {
 		return aux;
 	}
 
-	/**
-	 * Implementado...
-	 */
 	@Override
 	public String buscar(int posicao) throws PosicaoInvalidaException {
 
@@ -117,9 +108,6 @@ public class TListaCircular implements TLista {
 		return aux.dado;
 	}
 
-	/**
-	 * Implementado...
-	 */
 	@Override
 	public int posicao(String dado) throws ElementoNaoEncontradoException {
 
@@ -138,9 +126,6 @@ public class TListaCircular implements TLista {
 		return posicao;
 	}
 
-	/**
-	 * Implementado...
-	 */
 	@Override
 	public void remover(String dado) throws ElementoNaoEncontradoException, ListaVaziaException {
 
@@ -152,13 +137,11 @@ public class TListaCircular implements TLista {
 			throw new ElementoNaoEncontradoException();
 		}
 
-		TNo aux = inicio;
-
-		while (!aux.proximo.equals(inicio)) {
-			aux = aux.proximo;
+		if(tamanho() == 1) {
+			inicio = null;
 		}
-
-		if (tamanho() > 1) {
+		
+		else if (tamanho() > 1) {
 			TNo antecessor = antecessorTNo(dado);
 			TNo sucessor = sucessorTNo(dado);
 
@@ -167,16 +150,10 @@ public class TListaCircular implements TLista {
 			if (inicio.dado.equals(dado)) {
 				inicio = sucessor;
 			}
-		} else {
-			inicio = null;
-		}
-		
+		}		
 		tamanho--;
 	}
 
-	/**
-	 * Implementado...
-	 */
 	@Override
 	public void remover(int posicao)
 			throws PosicaoInvalidaException, ElementoNaoEncontradoException, ListaVaziaException {
@@ -208,9 +185,6 @@ public class TListaCircular implements TLista {
 		tamanho--;
 	}
 
-	/**
-	 * Implementado...
-	 */
 	public TNo antecessorTNo(String dado) throws ElementoNaoEncontradoException, ListaVaziaException {
 
 		if (isVazia()) {
@@ -245,9 +219,6 @@ public class TListaCircular implements TLista {
 		}
 	}
 
-	/**
-	 * Implementado...
-	 */
 	@Override
 	public String antecessor(String dado) throws ElementoNaoEncontradoException, ListaVaziaException {
 
@@ -283,9 +254,6 @@ public class TListaCircular implements TLista {
 		}
 	}
 
-	/**
-	 * Implementado...
-	 */
 	public TNo sucessorTNo(String dado) throws ElementoNaoEncontradoException, ListaVaziaException {
 
 		if (isVazia()) {
@@ -305,9 +273,6 @@ public class TListaCircular implements TLista {
 		return aux.proximo;
 	}
 
-	/**
-	 * Implementado...
-	 */
 	@Override
 	public String sucessor(String dado) throws ElementoNaoEncontradoException, ListaVaziaException {
 
@@ -328,9 +293,6 @@ public class TListaCircular implements TLista {
 		return aux.proximo.dado;
 	}
 
-	/**
-	 * Implementado...
-	 */
 	@Override
 	public boolean existe(String buscar) {
 
@@ -350,9 +312,6 @@ public class TListaCircular implements TLista {
 		return false;
 	}
 
-	/**
-	 * Implementado...
-	 */
 	@Override
 	public void imprimir() throws ListaVaziaException {
 
@@ -375,17 +334,11 @@ public class TListaCircular implements TLista {
 
 	}
 
-	/**
-	 * Implementado...
-	 */
 	@Override
 	public int tamanho() {
 		return tamanho;
 	}
 
-	/**
-	 * Implementado...
-	 */
 	@Override
 	public boolean isVazia() {
 		return this.inicio == null;
